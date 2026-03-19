@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Lista de Compras</h2>
+
+<input id="link" placeholder="Link">
+<input id="nome" placeholder="Nome">
+<input id="quantidade" placeholder="Quantidade">
+<button onclick="add()">Adicionar</button>
+
+<ul id="lista"></ul>
+
+<script>
+async function add() {
+    await fetch("http://localhost:8080/produtos", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            link: document.getElementById("link").value,
+            nome: document.getElementById("nome").value,
+            quantidade: parseInt(document.getElementById("quantidade").value)
+        })
+    });
+    load();
+}
+
+async function load() {
+    const res = await fetch("http://localhost:8080/produtos");
+    const data = await res.json();
+
+    const ul = document.getElementById("lista");
+    ul.innerHTML = "";
+
+    data.forEach(p => {
+        ul.innerHTML += `<li>${p.nome} - R$ ${p.preco}</li>`;
+    });
+}
+
+load();
+</script>
+
+</body>
+</html>
