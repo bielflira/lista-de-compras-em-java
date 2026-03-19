@@ -1,0 +1,20 @@
+import org.springframework.stereotype.Service;
+import java.util.List;
+
+@Service
+public class IAService {
+
+    public Produto recomendarMaisBarato(List<Produto> lista, String nome) {
+        Produto melhor = null;
+
+        for (Produto p : lista) {
+            if (p.getNome().toLowerCase().contains(nome.toLowerCase())) {
+                if (melhor == null || p.getPreco() < melhor.getPreco()) {
+                    melhor = p;
+                }
+            }
+        }
+
+        return melhor;
+    }
+}
