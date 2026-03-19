@@ -1,0 +1,23 @@
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ScraperService {
+
+    public double buscarPreco(String url) {
+        try {
+            Document doc = Jsoup.connect(url)
+                    .userAgent("Mozilla/5.0")
+                    .get();
+
+            String precoTexto = doc.select(".price").first().text();
+
+            precoTexto = precoTexto.replace("R$", "").replace(",", ".");
+
+            return Double.parseDouble(precoTexto);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+}
